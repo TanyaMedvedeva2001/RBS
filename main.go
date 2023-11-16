@@ -1,5 +1,9 @@
 package main
 
+import (
+	"projects/RBS/server"
+)
+
 func main() {
-	callServer()
+	server.CallServer()
 }

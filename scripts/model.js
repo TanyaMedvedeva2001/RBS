@@ -1,6 +1,7 @@
-export function getData(sortType, host, root, callback) {
+"use strict";
+function getData(sortType, host, tempRoot, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', host + 'dir?root=/home/' + root + '&sort=' + sortType);
+    xhr.open('GET', host + 'dir?root=/home/' + tempRoot + '&sort=' + sortType);
     xhr.responseType = 'json';
     xhr.onerror = function () {
     };

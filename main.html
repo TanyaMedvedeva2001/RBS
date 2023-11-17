@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="/static/mainstyles.css">
+<link rel="stylesheet" href="/css/mainstyles.css">
 <head>
-  <!-- <script type="module" src="static/model.js"></script> -->
-  <script type="module" src="static/get_dir.js"></script>
+  <script  src="scripts/model.js"></script>
+  <script  src="scripts/get_dir.js"></script>
 </head>
 <body>
-    <div class="data_block">
+    <div id="preloader">
+      <img src="static/preloader.gif" alt="preloader">
+    </div>
+    <nav id="data_block">
         <button type="button" id="back_button">Назад</button>
         <select id="sort_type">
             <option value="ASC" selected="selected">Сортировка по возрастанию</option>
             <option value="DESC">Сортировка по убыванию</option>
         </select>
-    </div>
+    </nav>
+    <article>
     <table>
         <thead>
           <tr>
@@ -24,5 +28,6 @@
         <tbody id="files">
         </tbody>
       </table>
+    </article>
 </body>
 </html>

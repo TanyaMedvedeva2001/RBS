@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -41,13 +41,23 @@ func readDir(root string, sortType string) ([]FileInfo, error) {
 					return
 				}
 				// сохраняем в лист
-				listOfFiles = append(listOfFiles, FileInfo{TypeFile: "Directory", Name: val.Name(),
-					Size: sizeOfDir, StringSize: convertSize(sizeOfDir)})
+				listOfFiles = append(listOfFiles,
+					FileInfo{
+						TypeFile:   "Directory",
+						Name:       val.Name(),
+						Size:       sizeOfDir,
+						StringSize: convertSize(sizeOfDir),
+					})
 			}(val)
 		} else {
 			// иначе сохраняем информацию о файл и его размере в срез
-			listOfFiles = append(listOfFiles, FileInfo{TypeFile: "File", Name: val.Name(),
-				Size: int(val.Size()), StringSize: convertSize(int(val.Size()))})
+			listOfFiles = append(listOfFiles,
+				FileInfo{
+					TypeFile:   "File",
+					Name:       val.Name(),
+					Size:       int(val.Size()),
+					StringSize: convertSize(int(val.Size())),
+				})
 		}
 	}
 	wg.Wait()

@@ -1,16 +1,23 @@
-package main
+package server
 
 import (
 	"encoding/json"
 	"html/template"
 	"log"
 	"net/http"
-	"path/filepath"
 )
 
-func callServer() {
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+type Response struct {
+	Status    int64      `JSON:"status"`
+	ErrorText string     `JSON:"error_text"`
+	Data      []FileInfo `JSON:"data"`
+}
+
+func CallServer() {
+	fs := http.FileServer(http.Dir("./css/"))
+	http.Handle("/css/", http.StripPrefix("/css", fs))
+	fs2 := http.FileServer(http.Dir("./scripts/"))
+	http.Handle("/scripts/", http.StripPrefix("/scripts", fs2))
 	http.HandleFunc("/", StartPage) // Устанавливаем роутер
 	http.HandleFunc("/dir", directJSON)
 	err := http.ListenAndServe(":8080", nil) // устанавливаем порт веб-сервера
@@ -39,10 +46,35 @@ func directJSON(rw http.ResponseWriter, r *http.Request) {
 	rw.Write(js_data)
 }
 
+// func directJSON(rw http.ResponseWriter, r *http.Request) {
+// 	root := r.URL.Query().Get("root")
+// 	sortType := r.URL.Query().Get("sort")
+// 	listOfDirectory, err := readDir(root, sortType)
+// 	rw.Header().Set("Content-Type", "application/json")
+// 	if err != nil {
+// 		response := Response{Status: 400, ErrorText: err.Error(), Data: []FileInfo{}}
+// 		jsonData, err := json.Marshal(response)
+// 		rw.Write(jsonData)
+// 		if err != nil {
+// 			http.Error(rw, err.Error(), 400)
+// 			return
+// 		}
+// 		return
+// 	}
+// 	response := Response{Status: 200, ErrorText: "", Data: listOfDirectory}
+// 	jsonData, err := json.Marshal(response)
+// 	if err != nil {
+// 		http.Error(rw, err.Error(), 400)
+// 		return
+// 	}
+// 	rw.Write(jsonData)
+// }
+
 // StartPage handler главной страницы (отправляет html)
 func StartPage(rw http.ResponseWriter, r *http.Request) {
 	//указываем путь к нужному файлу
-	path := filepath.Join("", "main.html")
+	path := "main.html"
+
 	//создаем html-шаблон
 	tmpl, err := template.ParseFiles(path)
 	if err != nil {

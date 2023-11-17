@@ -1,4 +1,8 @@
-import { getData } from "./model.js";
+"use strict";
+document.addEventListener('load', function () {
+    var preloader = document.querySelector('#preloader');
+    preloader.style.display = 'none';
+});
 document.addEventListener('DOMContentLoaded', function () {
     // 1. Создаём новый XMLHttpRequest-объект
     var sortType = "ASC";
@@ -20,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 td.textContent = jsonObj[i][arrFile[j]].replace(/\"/g, "");
                 tr.appendChild(td);
             }
-            ;
             if (typeFile == "Directory") {
                 newTableClick(jsonObj, tr, i);
             }
@@ -45,6 +48,13 @@ document.addEventListener('DOMContentLoaded', function () {
             createTable(jsonObj, table);
         });
     }
+    // buttonBack функционал кнопки "назад"
+    var buttonBack = document.querySelector('#back_button');
+    // let buttonBack = document.querySelector('#back_button');
+    buttonBack.onclick = function () { onClickBack(); };
+    //selectSort функционал селектора сортировки
+    var selectSort = document.querySelector('#sort_type');
+    selectSort.onchange = function () { selectChange(selectSort.value); };
     function onClickBack() {
         if (tempRoot != "") {
             tempRoot = tempRoot.substring(0, tempRoot.slice(0, -1).lastIndexOf('/') + 1);
@@ -54,12 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Вернуться дальше корня нельзя!");
         }
     }
-    // buttonBack функционал кнопки "назад"
-    var buttonBack = document.querySelector('#back_button');
-    // let buttonBack = document.querySelector('#back_button');
-    buttonBack.onclick = onClickBack;
-    function selectChange(e) {
-        if (e.target.value == "ASC") {
+    function selectChange(value) {
+        if (value == "ASC") {
             sortType = "ASC";
             updateTable();
         }
@@ -68,7 +74,4 @@ document.addEventListener('DOMContentLoaded', function () {
             updateTable();
         }
     }
-    //selectSort функционал селектора сортировки
-    var selectSort = document.querySelector('#sort_type');
-    selectSort.onchange = selectChange;
 });

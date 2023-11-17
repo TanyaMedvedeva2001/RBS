@@ -4,6 +4,18 @@ document.addEventListener('load', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function(){
+  function getData(sortType:string, host:string, tempRoot:string,callback:(XMLHttpRequest["response"])){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', host + 'dir?root=/home/' + tempRoot + '&sort=' + sortType);
+    xhr.responseType = 'json'
+    xhr.onerror = function(){
+    }
+    // 3. Этот код сработает после того, как мы получим ответ сервера
+    xhr.onload = function(){
+        callback(xhr.response)
+    }
+    xhr.send()
+  }
   // 1. Создаём новый XMLHttpRequest-объект
   let sortType: string = "ASC"
   const host: string = window.location.href

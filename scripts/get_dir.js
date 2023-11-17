@@ -1,18 +1,34 @@
 "use strict";
-document.addEventListener('load', function () {
-    var preloader = document.querySelector('#preloader');
-    preloader.style.display = 'none';
-});
+// document.addEventListener('load', function () {
+//   var preloader: HTMLElement = document.querySelector('#preloader') as HTMLElement;
+//   preloader.style.display = 'none';
+// });
 document.addEventListener('DOMContentLoaded', function () {
+
     // 1. Создаём новый XMLHttpRequest-объект
     var sortType = "ASC";
     var host = window.location.href;
     var tempRoot = "";
+
     getData(sortType, host, tempRoot, function (response_) {
         var table = document.querySelector('#files');
         var jsonObj = response_;
         createTable(jsonObj, table);
     });
+
+    function getData(sortType, host, tempRoot, callback) {
+        console.log(tempRoot)
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', host + 'dir?root=/home/' + tempRoot + '&sort=' + sortType);
+        xhr.responseType = 'json';
+        xhr.onerror = function () {
+        };
+        // 3. Этот код сработает после того, как мы получим ответ сервера
+        xhr.onload = function () {
+            callback(xhr.response);
+        };
+        xhr.send();
+    }
     //createTable создаёт новую таблицу на основе полученных данных
     function createTable(jsonObj, table) {
         var arrFile = ['TypeFile', 'Name', 'StringSize'];

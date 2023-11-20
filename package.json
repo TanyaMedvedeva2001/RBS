@@ -2,7 +2,7 @@
   "name": "rbs",
   "version": "1.0.0",
   "description": "",
-  "main": "scripts/get_dir.js",
+  "main": "scripts/index.js",
   "scripts": {
     "start": "webpack serve",
     "build": "webpack"

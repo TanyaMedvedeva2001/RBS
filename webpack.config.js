@@ -2,7 +2,7 @@ const path = require('path'); // Импортируем модуль "path" дл
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './scripts/get_dir.js', // Точка входа для сборки проекта
+  entry: './scripts/index.js', // Точка входа для сборки проекта
 
   output: {
     filename: 'static/bundle.js', // Имя выходного файла сборки

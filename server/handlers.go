@@ -26,46 +26,28 @@ func CallServer() {
 	}
 }
 
-//directJSON handler, отправляющий по гет-запросам json-файл с инфорамцией
-// о файлах в директории
 func directJSON(rw http.ResponseWriter, r *http.Request) {
 	root := r.URL.Query().Get("root")
 	sortType := r.URL.Query().Get("sort")
 	listOfDirectory, err := readDir(root, sortType)
 	if err != nil {
-		http.Error(rw, err.Error(), 400)
+		response := Response{Status: 400, ErrorText: err.Error(), Data: []FileInfo{}}
+		ans, _ := json.Marshal(response)
+		rw.Write(ans)
 		return
 	}
 	rw.Header().Set("Content-Type", "application/json")
 
-	js_data, err := json.Marshal(listOfDirectory)
+	response := Response{Status: 200, ErrorText: "", Data: listOfDirectory}
+	js_data, err := json.Marshal(response)
 	if err != nil {
-		http.Error(rw, err.Error(), 400)
+		response := Response{Status: 400, ErrorText: err.Error(), Data: []FileInfo{}}
+		ans, _ := json.Marshal(response)
+		rw.Write(ans)
 		return
 	}
 	rw.Write(js_data)
 }
-
-// func directJSON(rw http.ResponseWriter, r *http.Request) {
-// 	root := r.URL.Query().Get("root")
-// 	sortType := r.URL.Query().Get("sort")
-// 	listOfDirectory, err := readDir(root,index ErrorText: err.Error(), Data: []FileInfo{}}
-// 		jsonData, err := json.Marshal(response)
-// 		rw.Write(jsonData)
-// 		if err != nil {
-// 			http.Error(rw, err.Error(), 400)
-// 			return
-// 		}
-// 		return
-// 	}
-// 	response := Response{Status: 200, ErrorText: "", Data: listOfDirectory}
-// 	jsonData, err := json.Marshal(response)
-// 	if err != nil {
-// 		http.Error(rw, err.Error(), 400)
-// 		return
-// 	}
-// 	rw.Write(jsonData)
-// }
 
 // StartPage handler главной страницы (отправляет html)
 func StartPage(rw http.ResponseWriter, r *http.Request) {

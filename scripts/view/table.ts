@@ -2,43 +2,43 @@
 
 export class Table{
   fileModel : FileModel;
-  callback : Function;
+  callCreateTable : Function;
   reqParam : {tempRoot : string, sort : string};
 
   constructor(fileModel: FileModel,
-              callback: Function,
+              callCreateTable: Function,
               reqParam : {tempRoot : string,
                           sort : string})
   {
     this.reqParam = reqParam;
     this.fileModel = fileModel;
-    this.callback = callback;
+    this.callCreateTable = callCreateTable;
 
   }
 
-  createTable(jsonObj: XMLHttpRequest["response"])
+  createTable(jsonObj: XMLHttpRequest["response"]['data'])
   {
-      let table : Element = document.querySelector("#files") as Element;
-      table.innerHTML! = ''
-      const arrFile: string[] = ['TypeFile', 'Name', 'StringSize']
-      for (let i in jsonObj) {
-        let typeFile: string = JSON.stringify(jsonObj[i]['TypeFile']).replace(/\"/g, "")
-        let tr = document.createElement('tr');
-        for (let j = 0; j < 3; j++){
-          let td = document.createElement('td');
-          td.textContent = jsonObj[i][arrFile[j]].replace(/\"/g, "")
-          tr.appendChild(td)
-          let tableObj = this
-          if (typeFile == "Directory"){
-            tr.onclick = () => {tableObj.clickTable(jsonObj, i)}
-          }
-        }
-        table.appendChild(tr);
-      };
-      // console.log(jsonObj)
-
-  }
-  clickTable(jsonObj : XMLHttpRequest["response"], i : string){
+    let table : Element = document.querySelector("#files") as Element;
+    table.innerHTML! = ''
+    for (let i in jsonObj) {
+      let tr = document.createElement('tr');
+      let tdType = document.createElement('td');
+      tdType.textContent = jsonObj[i]['TypeFile'].replace(/\"/g, "")
+      tr.appendChild(tdType)
+      let tdName = document.createElement('td');
+      tdName.textContent = jsonObj[i]['Name'].replace(/\"/g, "")
+      tr.appendChild(tdName)
+      let tdSize = document.createElement('td');
+      tdSize.textContent = jsonObj[i]['StringSize'].replace(/\"/g, "")
+      tr.appendChild(tdSize)
+      // let tableObj = this
+      if (jsonObj[i]['TypeFile'].replace(/\"/g, "") == "Directory"){
+        tr.onclick = () => {this.clickTable(jsonObj, i)}
+      }
+      table.appendChild(tr);
+    }
+  };
+  clickTable(jsonObj : XMLHttpRequest["response"]['data'], i : string){
     this.reqParam.tempRoot += jsonObj[i]['Name'] + '/';
     this.fileModel.getData()
   }

@@ -3,12 +3,12 @@ export class FileModel{
   
   reqParam : {tempRoot : string, 
               sort : string};
-  callback : Function;
+              callCreateTable : Function;
   xhr : XMLHttpRequest;
   loader = new Loader()
-  constructor(reqParam : {tempRoot : string, sort : string}, callback : Function){
+  constructor(reqParam : {tempRoot : string, sort : string}, callCreateTable : Function){
     this.reqParam = reqParam
-    this.callback = callback
+    this.callCreateTable = callCreateTable
     this.xhr = new XMLHttpRequest();
   }
   getData(){
@@ -21,7 +21,7 @@ export class FileModel{
         alert(`Сервер не отвечает, статус: ${xhrObj.xhr.status}, текст ошибки: ${xhrObj.xhr.statusText}`)
     }
     // 3. Этот код сработает после того, как мы получим ответ сервера
-    this.xhr.onload = () => {xhrObj.callback(xhrObj.xhr, xhrObj.reqParam, xhrObj)}
+    this.xhr.onload = () => {xhrObj.callCreateTable(xhrObj.xhr, xhrObj.reqParam, xhrObj)}
     this.xhr.send()
   }
 }

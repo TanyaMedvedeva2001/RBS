@@ -4,7 +4,7 @@ var Loader = /** @class */ (function () {
     }
     Loader.prototype.show = function () {
         if (this.loader) {
-            this.loader.style.display = 'inline-block';
+            this.loader.style.visibility = 'visible';
         }
         else {
             alert("Loader не найден");
@@ -12,7 +12,7 @@ var Loader = /** @class */ (function () {
     };
     Loader.prototype.hide = function () {
         if (this.loader) {
-            this.loader.style.display = 'none';
+            this.loader.style.visibility = 'hidden';
         }
         else {
             alert("Loader не найден");

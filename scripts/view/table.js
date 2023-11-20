@@ -1,37 +1,35 @@
 var Table = /** @class */ (function () {
-    function Table(fileModel, callback, reqParam) {
+    function Table(fileModel, callCreateTable, reqParam) {
         this.reqParam = reqParam;
         this.fileModel = fileModel;
-        this.callback = callback;
+        this.callCreateTable = callCreateTable;
     }
     Table.prototype.createTable = function (jsonObj) {
+        var _this = this;
         var table = document.querySelector("#files");
         table.innerHTML = '';
-        var arrFile = ['TypeFile', 'Name', 'StringSize'];
         var _loop_1 = function (i) {
-            var typeFile = JSON.stringify(jsonObj[i]['TypeFile']).replace(/\"/g, "");
             var tr = document.createElement('tr');
-            var _loop_2 = function (j) {
-                var td = document.createElement('td');
-                td.textContent = jsonObj[i][arrFile[j]].replace(/\"/g, "");
-                tr.appendChild(td);
-                var tableObj = this_1;
-                if (typeFile == "Directory") {
-                    tr.onclick = function () { tableObj.clickTable(jsonObj, i); };
-                }
-            };
-            for (var j = 0; j < 3; j++) {
-                _loop_2(j);
+            var tdType = document.createElement('td');
+            tdType.textContent = jsonObj[i]['TypeFile'].replace(/\"/g, "");
+            tr.appendChild(tdType);
+            var tdName = document.createElement('td');
+            tdName.textContent = jsonObj[i]['Name'].replace(/\"/g, "");
+            tr.appendChild(tdName);
+            var tdSize = document.createElement('td');
+            tdSize.textContent = jsonObj[i]['StringSize'].replace(/\"/g, "");
+            tr.appendChild(tdSize);
+            // let tableObj = this
+            if (jsonObj[i]['TypeFile'].replace(/\"/g, "") == "Directory") {
+                tr.onclick = function () { _this.clickTable(jsonObj, i); };
             }
             table.appendChild(tr);
         };
-        var this_1 = this;
         for (var i in jsonObj) {
             _loop_1(i);
         }
-        ;
-        // console.log(jsonObj)
     };
+    ;
     Table.prototype.clickTable = function (jsonObj, i) {
         this.reqParam.tempRoot += jsonObj[i]['Name'] + '/';
         this.fileModel.getData();

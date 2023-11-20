@@ -2,12 +2,18 @@
   "name": "rbs",
   "version": "1.0.0",
   "description": "",
-  "main": "scripts/index.js",
+  "main": "public/index.ts",
   "scripts": {
     "start": "webpack serve",
     "build": "webpack"
-  },  
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.3",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.2.2",
+    "webpack-cli": "^5.1.4"
+  }
 }

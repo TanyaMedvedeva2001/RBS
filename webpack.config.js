@@ -2,17 +2,24 @@ const path = require('path'); // Импортируем модуль "path" дл
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './scripts/index.js', // Точка входа для сборки проекта
-
+  entry: './public/index.ts',
   output: {
-    filename: 'static/bundle.js', // Имя выходного файла сборки
-    path: path.resolve(__dirname, ''), // Путь для выходного файла сборки
+    filename: 'bundle.js', // Имя выходного файла сборки
+    path: path.resolve(__dirname, 'dist'), // Путь для выходного файла сборки
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
     rules: [
       {
         test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
         use: ['style-loader', 'css-loader'], // Загрузчики, используемые для обработки CSS-файлов
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
     ],
   },
@@ -25,10 +32,10 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: path.join(__dirname, 'static'), // Каталог для статики
+      directory: path.join(__dirname, ''), // Каталог для статики
     },
     open: true, // Автоматически открывать браузер
   },
-
-  mode: 'development', // Режим сборки
+  mode: 'development'
+  
 };

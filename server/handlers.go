@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	// "fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -14,8 +15,8 @@ type Response struct {
 }
 
 func CallServer() {
-	fs := http.FileServer(http.Dir("./css/"))
-	http.Handle("/css/", http.StripPrefix("/css", fs))
+	fs := http.FileServer(http.Dir("./public/"))
+	http.Handle("/public/", http.StripPrefix("/public", fs))
 	fs2 := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static", fs2))
 	http.HandleFunc("/", StartPage) // Устанавливаем роутер
@@ -52,7 +53,7 @@ func directJSON(rw http.ResponseWriter, r *http.Request) {
 // StartPage handler главной страницы (отправляет html)
 func StartPage(rw http.ResponseWriter, r *http.Request) {
 	//указываем путь к нужному файлу
-	path := "index.html"
+	path := "dist/index.html"
 
 	//создаем html-шаблон
 	tmpl, err := template.ParseFiles(path)

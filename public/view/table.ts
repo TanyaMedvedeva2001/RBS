@@ -21,7 +21,7 @@ export class Table{
     let dataJson = jsonObj.data
     let table : Element = document.querySelector("#files") as Element;
     table.innerHTML! = ''
-    for (let i in jsonObj) {
+    for (let i in dataJson) {
       let tr = document.createElement('tr');
       let tdType = document.createElement('td');
       tdType.textContent = dataJson[i]['TypeFile'].replace(/\"/g, "")
@@ -32,7 +32,6 @@ export class Table{
       let tdSize = document.createElement('td');
       tdSize.textContent = dataJson[i]['StringSize'].replace(/\"/g, "")
       tr.appendChild(tdSize)
-      // let tableObj = this
       if (dataJson[i]['TypeFile'].replace(/\"/g, "") == "Directory"){
         tr.onclick = () => {this.clickTable(jsonObj, i)}
       }

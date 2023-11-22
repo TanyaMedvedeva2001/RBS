@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/public/mainstyles.css">
+<script defer src="/public/dist/bundle.js"></script></head>
+<div id="preloader" class="preloader">
+  <img src="/public/preloader.gif" alt="preloader" class="loader">
+</div>
+<body>
+    <nav id="data_block">
+        <button type="button" id="redirect_btn">Статистика</button>
+        <button type="button" id="back_button">Назад</button>
+        <select id="sort_type">
+            <option value="ASC" selected="selected">Сортировка по возрастанию</option>
+            <option value="DESC">Сортировка по убыванию</option>
+        </select>
+    </nav>
+    <article>
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">Тип файла</th>
+            <th scope="col">Название файла</th>
+            <th scope="col">Размер файла</th>
+          </tr>
+        </thead>
+        <tbody id="files">
+        </tbody>
+      </table>
+    </article>
+</body>
+</html>

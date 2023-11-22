@@ -46,7 +46,7 @@ func readDir(root string, sortType string) ([]FileInfo, error) {
 						TypeFile:   "Directory",
 						Name:       val.Name(),
 						Size:       sizeOfDir,
-						StringSize: convertSize(sizeOfDir),
+						StringSize: ConvertSize(sizeOfDir),
 					})
 			}(val)
 		} else {
@@ -56,7 +56,7 @@ func readDir(root string, sortType string) ([]FileInfo, error) {
 					TypeFile:   "File",
 					Name:       val.Name(),
 					Size:       int(val.Size()),
-					StringSize: convertSize(int(val.Size())),
+					StringSize: ConvertSize(int(val.Size())),
 				})
 		}
 	}
@@ -73,7 +73,7 @@ func readDir(root string, sortType string) ([]FileInfo, error) {
 }
 
 //convertSize предназначена конвертации размера из байтов в другие
-func convertSize(sizeByte int) string {
+func ConvertSize(sizeByte int) string {
 	typeOfSize := [4]string{"byte", "Kb", "Mb", "Gb"}
 	for _, val := range typeOfSize {
 		if sizeByte < 1024 {

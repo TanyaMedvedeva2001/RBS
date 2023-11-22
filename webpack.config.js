@@ -5,7 +5,7 @@ module.exports = {
   entry: './public/index.ts',
   output: {
     filename: 'bundle.js', // Имя выходного файла сборки
-    path: path.resolve(__dirname, 'dist'), // Путь для выходного файла сборки
+    path: path.resolve(__dirname, 'public', 'dist'), // Путь для выходного файла сборки
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -27,12 +27,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './main.html',
+      publicPath: '/public/dist'
     }),
   ],
 
   devServer: {
     static: {
-      directory: path.join(__dirname, ''), // Каталог для статики
+      directory: path.join(__dirname, './public'), // Каталог для статики
     },
     open: true, // Автоматически открывать браузер
   },

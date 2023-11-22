@@ -4,6 +4,7 @@ import { SortType } from "..";
 export class Control{
   btnBack!: HTMLButtonElement;
   select!: HTMLSelectElement;
+  btnRedirect!: HTMLButtonElement;
   fileModel : FileModel;
   reqParam : {tempRoot : string, sort : string};
   constructor(fileModel : FileModel,
@@ -11,6 +12,7 @@ export class Control{
               ){
                 this.btnBack =  document.querySelector("#back_button")!;
                 this.select = document.querySelector("#sort_type")!;
+                this.btnRedirect = document.querySelector("#redirect_btn")!;
                 this.fileModel = fileModel;
                 this.reqParam = reqParam;
               }
@@ -32,6 +34,9 @@ export class Control{
         ctrl.reqParam.sort = SortType.desc
         ctrl.fileModel.getData()
       }
+    }
+    this.btnRedirect.onclick = () => {
+      window.open('http://localhost:80/GetStat.php', '_blank');
     }
   }
 }

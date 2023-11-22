@@ -65,6 +65,18 @@ select[id="sort_type"]{
     border-radius: 10px;
 
 }
+button[id="redirect_btn"] {
+    margin: 1%;
+    color: #FBEEC1; /* цвет текста */
+    text-decoration: none; /* убирать подчёркивание у ссылок */
+    user-select: none; /* убирать выделение текста */
+    background: #659DbD; /* фон кнопки */
+    padding: .7em 1.5em; /* отступ от текста */
+    outline: none; /* убирать контур в Mozilla */
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+} 
 .input-box {
     /* родительский блок относительно которого будем формировать положение
     тега label */

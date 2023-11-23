@@ -1,25 +1,17 @@
 <?php
 // defined('INDEX') OR die('Прямой доступ к странице запрещён!');
+require('Connect.php');
 
-$dblogin = "root"; // ВАШ ЛОГИН К БАЗЕ ДАННЫХ
-$dbpass = ""; // ВАШ ПАРОЛЬ К БАЗЕ ДАННЫХ
-$db = "rbsstat"; // НАЗВАНИЕ БАЗЫ ДЛЯ САЙТА
-$dbhost="localhost"; 
+$conn = Connect();
 
-
-$conn = mysqli_connect($dbhost, $dblogin, $dbpass, $db);
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+try{
+    $json = file_get_contents("php://input");
+}catch(Exception $e){
+    die("Данные не получены " . $e->getMessage() . "\n");
 }
-echo "Connected successfully\n";
 
-$json = file_get_contents("php://input");
-if (!empty($json)){
-    echo "Данные получены\n";
-}
-else{
-    echo "Данные не получены\n";
-}
+echo "Данные получены\n";
+
 
 $data = json_decode($json, true);
 $lead_time = $data['Time'];
@@ -29,14 +21,15 @@ $sizeStr = $data['SizeStr'];
 
 $stmt = $conn->prepare("INSERT INTO statistics(lead_time, root, size, sizeStr) VALUES (?, ?, ?, ?)");
 $stmt->bind_param('isis', $lead_time, $root, $size, $sizeStr);
-$result = $stmt->execute();
 
-if($result){
-    echo "Данные отправлены";
+try{
+    $result = $stmt->execute();
+}catch(Exception $e){
+    die("Данные не отправлены " . $e->getMessage() . "\n");
 }
-else{
-    echo "Данные не отправлены";
-}
+
+echo "Данные отправлены\n";
+
 $stmt->close();
 
 mysqli_close($conn);

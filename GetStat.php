@@ -121,49 +121,44 @@ label[name="root-label"] {
     position: relative;    
 }
 .canvas{
-    max-width: 400px;
+    max-width: 600px;
     max-height: 350px
 }
 </style>
 <?php
-    $dblogin = "root"; // ВАШ ЛОГИН К БАЗЕ ДАННЫХ
-    $dbpass = ""; // ВАШ ПАРОЛЬ К БАЗЕ ДАННЫХ
-    $db = "rbsstat"; // НАЗВАНИЕ БАЗЫ ДЛЯ САЙТА
-    $dbhost="localhost"; 
-
-
-    $conn = mysqli_connect($dbhost, $dblogin, $dbpass, $db);
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
+    require('GetData.php');
+    $data = GetData();
+    $tempData = array();
+    for ($i = 0; $i < count($data['sizeStr']); $i++){
+        $tempData[$data['sizeStr'][$i]][] = $data['lead_time'][$i];
     }
-
-    $sql = "SELECT * FROM statistics";
-    if($result = $conn->query($sql)){
-        foreach($result as $row){
-            $root[] = $row["root"];
-            $size[] = $row['size'];
-            $sizeStr[] = $row['sizeStr'];
-            $time[] = $row['lead_time'];
+    $tableData = array();
+    foreach($tempData as $key => $val){
+        $temp = 0;
+        for($i = 0; $i < count($val); $i++){
+            $temp += (int)$val[$i];
         }
+        $tableData[$key] = $temp / count($val);
     }
-    mysqli_close($conn);
-    $data = array("lead_time" => $time, "size" => $size);
+    arsort($tableData);
 ?>
 <script>
     window.onload = function() {
-        var data = <?php echo json_encode($data);?>;
+        var btnRedirect = document.querySelector("#back_button")
+        btnRedirect.onclick = () => {
+            window.location.href = 'http://localhost:8080/';
+        }
+        var data = <?php echo json_encode($tableData);?>;
         var ctx = document.getElementById("line-chart");
-        // ctx.canvas.width = 300;
-        // ctx.canvas.height = 300;
         new Chart(ctx, {
             type: 'line',
             color: '#000000',
 
             data: {
-                labels: data.size,
+                labels: Object.keys(data),
                 datasets: [{ 
-                    data: data.lead_time,
-                    label: "Зависимость времени выполнения от размера директории",
+                    data: Object.values(data),
+                    label: "Среднее время выполнения, мс",
                     borderColor: "#FBEEC1",
                     fill: true,
                 }
@@ -174,15 +169,16 @@ label[name="root-label"] {
                 color: "#FBEEC1",
                 title: {
                 display: true,
-                text: 'Зависимость размер директории от времени выполнения',
+                text: '',
                 }
             }
-        }); 
+        });
     }
 </script>
 </head>
 
 <body>
+    <button type="button" id="back_button">Назад</button>
     <div> <canvas id="line-chart" class="canvas" ></canvas></div>
     <article>
     <table>
@@ -195,11 +191,12 @@ label[name="root-label"] {
         </thead>
         <tbody>
         <?php
-            for ($i = 0; $i < count($sizeStr); $i++) {
+            $dataTable = GetData();
+            for ($i = count($dataTable['sizeStr']) - 1; $i > 0; $i--) {
                 echo "<tr>";
-                echo "<td>" . $root[$i] . "</td>";
-                echo "<td>" . $sizeStr[$i] . "</td>";
-                echo "<td>" . $time[$i] . "</td>";
+                echo "<td>" . $dataTable['root'][$i] . "</td>";
+                echo "<td>" . $dataTable['sizeStr'][$i] . "</td>";
+                echo "<td>" . $dataTable['lead_time'][$i] . "</td>";
                 echo "<tr>";
             }
         ?>

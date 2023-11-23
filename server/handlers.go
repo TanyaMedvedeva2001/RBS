@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"gopkg.in/ini.v1"
 )
 
 type Statistic struct {
@@ -76,9 +78,23 @@ func directJSON(rw http.ResponseWriter, r *http.Request) {
 	postPHP(stat)
 }
 
+func getParamFromConfig(sect string, param string) string {
+	cfg, err := ini.Load("server/config.ini")
+	if err != nil {
+		log.Fatal(err)
+	}
+	section, _ := cfg.GetSection(sect)
+	k, _ := section.GetKey(param)
+	log.Printf("%s: %s", param, k)
+	return k.String()
+}
+
 func postPHP(stat Statistic) {
 	jsPost, err := json.Marshal(stat)
-	req, err := http.NewRequest("POST", "http://localhost:80/SetStat.php", bytes.NewBuffer(jsPost))
+	host := getParamFromConfig("", "host")
+	url := fmt.Sprintf("http://%s/SetStat.php", host)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsPost))
+
 	// Устанавливаем заголовок с типом данных в теле запроса
 	req.Header.Set("Content-Type", "application/json")
 
